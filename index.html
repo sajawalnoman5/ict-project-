@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Quiz Platform</title>
+    <link rel="stylesheet" href="\style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <button onclick="showHome()">Home</button>
+            <button onclick="showAbout()">About</button>
+            <button onclick="showContact()">Contact Us</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div id="home-section">
+            <h1>Online Quiz Platform</h1>
+            <h2>Enter your details to start the quiz</h2>
+            <input type="text" id="student-name" placeholder="Your Name" required>
+            <input type="text" id="reg-number" placeholder="Registration Number" required>
+            <button onclick="startQuizPage()">Start Quiz</button>
+        </div>
+
+        <div id="interest-section" class="hidden">
+            <h2>Select Your Interest</h2>
+            <button onclick="startQuiz('programming')">Programming Fundamentals</button>
+            <button onclick="startQuiz('physics')">Applied Physics</button>
+            <button onclick="startQuiz('ict')">Application of ICT</button>
+        </div>
+
+        <div id="quiz-section" class="hidden">
+            <h2>Quiz</h2>
+            <div id="question" style="margin: 20px 0; font-size: 1.2rem;"></div>
+            <div>
+                <button onclick="submitAnswer(true)">True</button>
+                <button onclick="submitAnswer(false)">False</button>
+            </div>
+        </div>
+
+        <div id="result-section" class="hidden">
+            <h2>Quiz Results</h2>
+            <div class="results">
+                <p id="correct"></p>
+                <p id="incorrect"></p>
+            </div>
+            <button onclick="restartQuiz()">Restart Quiz</button>
+        </div>
+
+        <div id="contact-section" class="hidden">
+            <h2>Contact Us</h2>
+            <form>
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <textarea placeholder="Your Message" rows="4" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+            <button onclick="showHome()">Back to Home</button>
+        </div>
+
+        <div id="about-section" class="hidden">
+            <h2>About Us</h2>
+            <p>Welcome to the Professional Quiz Platform! Our mission is to provide engaging and educational quizzes on various topics, helping you enhance your knowledge and skills. Whether you're looking to test your expertise in programming, physics, or ICT, we offer a range of quizzes designed to challenge and improve your understanding.</p>
+            
+            <h3>Our Mission</h3>
+            <p>Our platform aims to offer a dynamic learning environment where users can easily access quizzes on different subjects, improve their skills, and track their progress over time. We believe that learning through quizzes can make education fun, interactive, and more effective.</p>
+
+            <h3>Meet the Team</h3>
+            <p>We are a passionate group of educators, developers, and tech enthusiasts dedicated to making learning more accessible and engaging. Our team works tirelessly to create high-quality quizzes that challenge you while also helping you learn.</p>
+
+            <ul>
+                <li><strong>Muhammad Anas Marghoob</strong> </li>
+                <li><strong>Muhammad Sajawal Noman</strong> </li>
+                <li><strong>Muhammad Ammar Yasir</strong> </li>
+                <li><strong>Talha Iqbal</strong> - Educational Advisor</li>
+            </ul>
+
+            <h3>Join Us</h3>
+            <p>If you’re passionate about learning and want to be part of our journey, <strong>get in touch with us</strong> to learn more about opportunities to collaborate, contribute, or suggest new quiz topics!</p>
+
+            <button onclick="showHome()">Back to Home</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = {
+            programming: [
+                { text: 'Variables are used to store data.', answer: true },
+                { text: 'Functions in JavaScript can have default parameters.', answer: true },
+                { text: 'HTML stands for Hyper Text Markup Language.', answer: true },
+                { text: 'CSS is used to add functionality to web pages.', answer: false },
+                { text: 'JavaScript is a strongly typed language.', answer: false },
+                { text: 'The DOM stands for Document Object Model.', answer: true },
+                { text: 'A for loop in Python is denoted by the keyword "foreach".', answer: false },
+                { text: 'An array can contain multiple types of elements.', answer: true },
+                { text: 'The === operator in JavaScript checks for both value and type.', answer: true },
+                { text: 'NaN stands for Not-a-Number.', answer: true },
+                { text: 'ReactJS is a backend framework.', answer: false },
+                { text: 'JSON is used for data interchange.', answer: true },
+                { text: 'In Java, "int" is a reference type.', answer: false },
+                { text: 'CSS Grid is used for creating responsive layouts.', answer: true },
+                { text: 'PHP is a client-side scripting language.', answer: false },
+                { text: 'SQL is used to query and manipulate databases.', answer: true },
+                { text: 'AJAX stands for Asynchronous JavaScript and XML.', answer: true },
+                { text: 'A function without a return statement automatically returns undefined in JavaScript.', answer: true },
+                { text: 'Git is a distributed version control system.', answer: true },
+                { text: 'ES6 introduced the let and const keywords.', answer: true }
+            ],
+            physics: [
+                { text: 'Speed is a scalar quantity.', answer: true },
+                { text: 'The unit of force is the Newton.', answer: true },
+                { text: 'Energy can be created and destroyed.', answer: false },
+                { text: 'An object in free fall experiences no acceleration.', answer: false },
+                { text: 'The first law of thermodynamics is a statement of the conservation of energy.', answer: true },
+                { text: 'Light exhibits both wave and particle properties.', answer: true },
+                { text: 'Electric current is measured in amperes.', answer: true },
+                { text: 'A capacitor stores energy in the form of a magnetic field.', answer: false },
+                { text: 'Work done is the product of force and displacement.', answer: true },
+                { text: 'Power is energy transferred per unit time.', answer: true },
+                { text: 'A black hole has an escape velocity greater than the speed of light.', answer: true },
+                { text: 'Entropy measures the disorder in a system.', answer: true },
+                { text: 'Inertia is the resistance of an object to changes in its state of motion.', answer: true },
+                { text: 'The speed of light in a vacuum is approximately 3 x 10^8 m/s.', answer: true },
+                { text: 'Acceleration is defined as the rate of change of velocity.', answer: true },
+                { text: 'Sound waves are transverse waves.', answer: false },
+                { text: 'Nuclear fusion occurs in the sun.', answer: true },
+                { text: 'Ohm’s law states that V = IR.', answer: true },
+                { text: 'Momentum is conserved in an elastic collision.', answer: true },
+                { text: 'The centripetal force is directed away from the center of a circular path.', answer: false }
+            ],
+            ict: [
+                { text: 'ICT stands for Information and Communication Technology.', answer: true },
+                { text: 'A smartphone is an example of an ICT tool.', answer: true },
+                { text: 'Data can only be stored in a local environment in ICT.', answer: false },
+                { text: 'E-commerce relies heavily on ICT.', answer: true },
+                { text: 'Cloud computing is unrelated to ICT.', answer: false },
+                { text: 'Cybersecurity is a critical aspect of ICT.', answer: true },
+                { text: 'ICT has no impact on modern education.', answer: false },
+                { text: 'The Internet is an integral part of ICT.', answer: true },
+                { text: 'ICT systems are essential for modern healthcare.', answer: true },
+                { text: 'Social media platforms utilize ICT technologies.', answer: true },
+                { text: 'Digital communication is part of ICT.', answer: true },
+                { text: 'ICT tools include both hardware and software components.', answer: true },
+                { text: 'ICT does not involve any ethical concerns.', answer: false },
+                { text: 'Data mining is a function of ICT.', answer: true },
+                { text: 'Telecommunication networks fall under ICT.', answer: true },
+                { text: 'AI is unrelated to ICT.', answer: false },
+                { text: 'ICT helps in reducing operational costs for businesses.', answer: true },
+                { text: 'Online banking systems are an application of ICT.', answer: true },
+                { text: 'Virtual Reality is an ICT-based technology.', answer: true },
+                { text: 'Blockchain technology is unrelated to ICT.', answer: false }
+            ]
+        };
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        let currentQuiz = [];
+        let currentQuestion = 0;
+        let score = { correct: 0, incorrect: 0 };
+
+        function startQuizPage() {
+            const name = document.getElementById('student-name').value;
+            const regNumber = document.getElementById('reg-number').value;
+
+            if (!name || !regNumber) {
+                alert('Please enter both your name and registration number.');
+                return;
+            }
+
+            document.getElementById('home-section').classList.add('hidden');
+            document.getElementById('interest-section').classList.remove('hidden');
+        }
+
+        function startQuiz(topic) {
+            currentQuiz = questions[topic];
+            shuffleArray(currentQuiz);
+            currentQuestion = 0;
+            score = { correct: 0, incorrect: 0 };
+
+            document.getElementById('interest-section').classList.add('hidden');
+            document.getElementById('quiz-section').classList.remove('hidden');
+
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const questionElement = document.getElementById('question');
+            if (currentQuestion < 10) {
+                questionElement.textContent = currentQuiz[currentQuestion].text;
+            } else {
+                showResults();
+            }
+        }
+
+        function submitAnswer(answer) {
+            if (currentQuiz[currentQuestion].answer === answer) {
+                score.correct++;
+            } else {
+                score.incorrect++;
+            }
+            currentQuestion++;
+            showQuestion();
+        }
+
+        function showResults() {
+            document.getElementById('quiz-section').classList.add('hidden');
+            document.getElementById('result-section').classList.remove('hidden');
+
+            document.getElementById('correct').textContent = `Correct answers: ${score.correct}`;
+            document.getElementById('incorrect').textContent = `Incorrect answers: ${score.incorrect}`;
+        }
+
+        function restartQuiz() {
+            document.getElementById('result-section').classList.add('hidden');
+            document.getElementById('home-section').classList.remove('hidden');
+        }
+
+        function showHome() {
+            document.getElementById('about-section').classList.add('hidden');
+            document.getElementById('contact-section').classList.add('hidden');
+            document.getElementById('home-section').classList.remove('hidden');
+        }
+
+        function showAbout() {
+            document.getElementById('home-section').classList.add('hidden');
+            document.getElementById('contact-section').classList.add('hidden');
+            document.getElementById('about-section').classList.remove('hidden');
+        }
+
+        function showContact() {
+            document.getElementById('home-section').classList.add('hidden');
+            document.getElementById('about-section').classList.add('hidden');
+            document.getElementById('contact-section').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
